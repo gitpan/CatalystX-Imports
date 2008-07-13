@@ -1,3 +1,10 @@
+  0.01    - Sun Jul 13 14:13:32 CEST 2008
+    - First non-dev release.
+    - Remove BIG FAT WARNING.
+    - Implement flash vars.
+    - Test session and flash vars.
+    - Require C::P::S{,::State::Cookie,::Store::FastMmap} for testing.
+    - Documentation typo fix.
 
-  0.01 - Mon Jan 22 19:55:59 CET 2007
+  0.01_01 - Mon Jan 22 19:55:59 CET 2007
     - Initial version

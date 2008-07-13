@@ -6,7 +6,9 @@ use base 'Catalyst::Controller';
 
 use CatalystX::Imports
     Context => ':all',
-    Vars    => { Stash => [qw( $foo @bar %baz )] };
+    Vars    => { Stash   => [qw( $foo @bar %baz )],
+                 Session => [qw( $moo  )],
+                 Flash   => [qw( $kooh )] };
 
 sub test_self:  Local { $_[1]->res->body( ref $self ) }
 sub test_ctx:   Local { $_[1]->res->body( ref $ctx ) }
@@ -46,4 +48,20 @@ sub test_passed_args_rcvr: Private {
     $ctx->res->body( join ', ', @args );
 }
 
+sub set_session: Local {
+    $moo = $args[0];
+}
+
+sub test_session: Local {
+    $ctx->res->body( $moo );
+}
+
+
+sub set_flash: Local {
+    $kooh = $args[0];
+}
+
+sub test_flash: Local {
+    $ctx->res->body( $kooh );
+}
 1;

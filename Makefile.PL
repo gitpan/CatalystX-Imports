@@ -23,6 +23,10 @@ requires        q{Catalyst::Runtime},           '5.7000';
 requires        q{Data::Alias},                 '0.08';
 requires        q{Class::C3},                   '0.14';
 
+test_requires   q{Catalyst::Plugin::Session},                   0;
+test_requires   q{Catalyst::Plugin::Session::State::Cookie},    0;
+test_requires   q{Catalyst::Plugin::Session::Store::FastMmap},  0;
+
 auto_provides;
 WriteAll;
 

@@ -45,7 +45,7 @@ $DEFAULT_LIBRARY  = __PACKAGE__ . '::Default';
 
   sub edit: Local {
       stash(
-          foo      => model(model_name)->find(args->[0]),
+          foo      => model(model_name)->find(args[0]),
           list_uri => uri_for(action('list')),
       );
   }

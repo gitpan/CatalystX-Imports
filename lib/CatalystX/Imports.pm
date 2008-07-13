@@ -21,11 +21,11 @@ use Filter::EOF;
 
 =head1 VERSION
 
-0.01_01
+0.01
 
 =cut
 
-$VERSION = '0.01_01';
+$VERSION = '0.01';
 $VERSION = eval $VERSION;
 
 =head1 SYNOPSIS
@@ -37,7 +37,8 @@ $VERSION = eval $VERSION;
       Context => { Default => [qw( :all )],
                    Config  => [{model => 'model_name'}, 'template'] },
       Vars    => { Stash   => [qw( $user $user_rs $template )],
-                   Session => [qw( @shown_users )] };
+                   Session => [qw( @shown_users )],
+                   Flash   => [qw( $message )] };
 
   sub list: Chained {
       $user_rs = model(model_name)->search_rs;
@@ -52,12 +53,14 @@ $VERSION = eval $VERSION;
       $template = template;
   }
 
+  sub edit: Chained('load') {
+      if (validate_params(request->params)) {
+          $user->update(request->params);
+          $message = "user updated";
+      }
+  }
+
   1;
-
-=head1 BIG FAT WARNING
-
-This is B<ALPHA SOFTWARE>! You're strongly advised against using this
-module in a production environment. Use at your own risk.
 
 =head1 DESCRIPTION
 
@@ -91,7 +94,8 @@ the C<$self>, C<$ctx> and C<@args> variables as if you'd have done
   my ($self, $ctx, @args) = @_;
 
 in one of your actions. It also allows you to import variables bound to
-values in the stash or session stores, like shown in the L</SYNOPSIS>.
+values in the stash, flash or session stores, like shown in the
+L</SYNOPSIS>.
 
 You can use this functionality via the C<Vars> argument on the C<use>
 line:

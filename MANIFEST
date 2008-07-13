@@ -21,6 +21,7 @@ t/01-pod.t
 t/02-pod-coverage.t
 t/10-context-basic.t
 t/20-vars-basic.t
+t/25-vars-session.t
 t/30-exceptions.t
 t/lib/TestApp.pm
 t/lib/TestApp/Controller.pm

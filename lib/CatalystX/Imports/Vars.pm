@@ -58,8 +58,8 @@ via
 in your action.
 
 You can use a hash reference to specify what variables you want to bind
-to their respective fields in the session or stash, as demonstrated in
-the L</SYNOPSIS>.
+to their respective fields in the session, flash or stash, as
+demonstrated in the L</SYNOPSIS>.
 
 =cut
 
@@ -87,6 +87,7 @@ sub export_into {
     # fetch session and
     my @session = @{ $args->{Session} || [] };
     my @stash   = @{ $args->{Stash}   || [] };
+    my @flash   = @{ $args->{Flash}   || [] };
 
     # build map of symbol hash refs, containing method, type and
     # sym (name)
@@ -94,11 +95,11 @@ sub export_into {
         map { {method => $_->[0], type => $_->[2], sym => $_->[3]} }
         map { [@$_, $class->_destruct_var_name($_->[1])] }
         map { my $x = $_; map { [$x->[0], $_] } @{ $x->[1] } }
-            [session => \@session], [stash => \@stash];
+            [session => \@session], [stash => \@stash], [flash => \@flash];
 
     # export all symbols into the requesting namespace, include defaults
     $class->export_var_into($target, $class->_destruct_var_name($_))
-        for @session, @stash, qw($self $ctx @args);
+        for @session, @stash, @flash, qw($self $ctx @args);
 
     # build and register our action wrapper
     $class->register_action_wrap_in($target, sub {
