@@ -10,6 +10,7 @@ build_requires:
   FindBin: 0
   HTTP::Request: 0
   Test::More: 0.62
+  Test::WWW::Mechanize::Catalyst: 0
 distribution_type: module
 generated_by: 'Module::Install version 0.75'
 license: perl
@@ -24,7 +25,7 @@ no_index:
 provides:
   CatalystX::Imports:
     file: lib/CatalystX/Imports.pm
-    version: 0.01
+    version: 0.02
   CatalystX::Imports::Context:
     file: lib/CatalystX/Imports/Context.pm
   CatalystX::Imports::Context::Config:
@@ -39,7 +40,7 @@ requires:
   Class::C3: 0.14
   Class::Inspector: 0
   Data::Alias: 0.08
-  Filter::EOF: 0.02
   List::MoreUtils: 0.19
   Scalar::Util: 1.19
-version: 0.01
+  Scope::Guard: 0
+version: 0.02

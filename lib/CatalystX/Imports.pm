@@ -17,15 +17,17 @@ use vars qw(
 
 use Class::Inspector;
 use Carp::Clan        qw{ ^CatalystX::Imports(?:::|$) };
-use Filter::EOF;
+use Scope::Guard;
+
+our $SCOPE_GUARD = 'CatalystX-Imports-Guard';
 
 =head1 VERSION
 
-0.01
+0.02
 
 =cut
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 $VERSION = eval $VERSION;
 
 =head1 SYNOPSIS
@@ -134,9 +136,10 @@ sub import {
     my $caller = scalar caller;
 
     # call install_action_wrap_into after package runtime
-    Filter::EOF->on_eof_call( sub {
-        my $eof = shift;
-        $$eof = "; ${class}->install_action_wrap_into('${caller}'); 1;";
+    $^H |= 0x120000;
+
+    $^H{ $SCOPE_GUARD } = Scope::Guard->new(sub {
+        $class->install_action_wrap_into($caller);
     });
 
     # call current export mechanism

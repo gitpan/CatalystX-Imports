@@ -9,13 +9,8 @@ license         q{perl};
 author          q{Robert "phaylon" Sedlacek <rs@474.at>};
 all_from        q{lib/CatalystX/Imports.pm};
 
-build_requires  q{Test::More},                  '0.62';
-build_requires  q{FindBin},                     0;
-build_requires  q{Catalyst::Test},              0;
-build_requires  q{HTTP::Request},               0;
-
 requires        q{Carp::Clan},                  0;
-requires        q{Filter::EOF},                 '0.02';
+requires        q{Scope::Guard},                0;
 requires        q{Class::Inspector},            0;
 requires        q{List::MoreUtils},             '0.19';
 requires        q{Scalar::Util},                '1.19';
@@ -23,6 +18,11 @@ requires        q{Catalyst::Runtime},           '5.7000';
 requires        q{Data::Alias},                 '0.08';
 requires        q{Class::C3},                   '0.14';
 
+test_requires   q{Test::More},                                  '0.62';
+test_requires   q{FindBin},                                     0;
+test_requires   q{Catalyst::Test},                              0;
+test_requires   q{Test::WWW::Mechanize::Catalyst},              0;
+test_requires   q{HTTP::Request},                               0;
 test_requires   q{Catalyst::Plugin::Session},                   0;
 test_requires   q{Catalyst::Plugin::Session::State::Cookie},    0;
 test_requires   q{Catalyst::Plugin::Session::Store::FastMmap},  0;
