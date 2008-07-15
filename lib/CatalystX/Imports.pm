@@ -17,17 +17,15 @@ use vars qw(
 
 use Class::Inspector;
 use Carp::Clan        qw{ ^CatalystX::Imports(?:::|$) };
-use Scope::Guard;
-
-our $SCOPE_GUARD = 'CatalystX-Imports-Guard';
+use Filter::EOF;
 
 =head1 VERSION
 
-0.02
+0.03
 
 =cut
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 $VERSION = eval $VERSION;
 
 =head1 SYNOPSIS
@@ -65,6 +63,8 @@ $VERSION = eval $VERSION;
   1;
 
 =head1 DESCRIPTION
+
+This module is B<not> stable yet. Features may change.
 
 This module exports commonly used functionality and shortcuts to
 L<Catalyst>s own feature set into your controller. Currently, these
@@ -136,10 +136,9 @@ sub import {
     my $caller = scalar caller;
 
     # call install_action_wrap_into after package runtime
-    $^H |= 0x120000;
-
-    $^H{ $SCOPE_GUARD } = Scope::Guard->new(sub {
-        $class->install_action_wrap_into($caller);
+    Filter::EOF->on_eof_call( sub {
+        my $eof = shift;
+        $$eof = "; ${class}->install_action_wrap_into('${caller}'); 1;";
     });
 
     # call current export mechanism

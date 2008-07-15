@@ -10,7 +10,7 @@ author          q{Robert "phaylon" Sedlacek <rs@474.at>};
 all_from        q{lib/CatalystX/Imports.pm};
 
 requires        q{Carp::Clan},                  0;
-requires        q{Scope::Guard},                0;
+requires        q{Filter::EOF},                 '0.02';
 requires        q{Class::Inspector},            0;
 requires        q{List::MoreUtils},             '0.19';
 requires        q{Scalar::Util},                '1.19';

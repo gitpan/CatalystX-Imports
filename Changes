@@ -1,3 +1,7 @@
+  0.03    - Tue Jul 15 18:15:37 CEST 2008
+    - Revert the previous change to use Scope::Guard instead of Filter::EOF.
+      It was broken.
+
   0.02    - Mon Jul 14 22:11:33 CEST 2008
     - Use Scope::Guard and %^H instead of Filter::EOF.
     - test_require Test::WWW::Mechanize::Catalyst

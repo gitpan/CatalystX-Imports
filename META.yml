@@ -22,25 +22,13 @@ no_index:
   directory:
     - inc
     - t
-provides:
-  CatalystX::Imports:
-    file: lib/CatalystX/Imports.pm
-    version: 0.02
-  CatalystX::Imports::Context:
-    file: lib/CatalystX/Imports/Context.pm
-  CatalystX::Imports::Context::Config:
-    file: lib/CatalystX/Imports/Context/Config.pm
-  CatalystX::Imports::Context::Default:
-    file: lib/CatalystX/Imports/Context/Default.pm
-  CatalystX::Imports::Vars:
-    file: lib/CatalystX/Imports/Vars.pm
 requires:
   Carp::Clan: 0
   Catalyst::Runtime: 5.7000
   Class::C3: 0.14
   Class::Inspector: 0
   Data::Alias: 0.08
+  Filter::EOF: 0.02
   List::MoreUtils: 0.19
   Scalar::Util: 1.19
-  Scope::Guard: 0
-version: 0.02
+version: 0.03
