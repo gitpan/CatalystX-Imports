@@ -18,14 +18,15 @@ use vars qw(
 use Class::Inspector;
 use Carp::Clan        qw{ ^CatalystX::Imports(?:::|$) };
 use Filter::EOF;
+use Sub::Name 'subname';
 
 =head1 VERSION
 
-0.03
+0.04
 
 =cut
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 $VERSION = eval $VERSION;
 
 =head1 SYNOPSIS
@@ -249,7 +250,8 @@ sub install_action_wrap_into {
         # replace code reference in package
         {   no strict 'refs';
             no warnings 'redefine';
-            *{ "${target}::$methods{$original}" } = $wrapped;
+            my $method_name = "${target}::$methods{$original}";
+            *$method_name = subname $method_name, $wrapped;
         }
     }
 

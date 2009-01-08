@@ -17,6 +17,7 @@ requires        q{Scalar::Util},                '1.19';
 requires        q{Catalyst::Runtime},           '5.7000';
 requires        q{Data::Alias},                 '0.08';
 requires        q{Class::C3},                   '0.14';
+requires        q{Sub::Name},                   '0.04';
 
 test_requires   q{Test::More},                                  '0.62';
 test_requires   q{FindBin},                                     0;

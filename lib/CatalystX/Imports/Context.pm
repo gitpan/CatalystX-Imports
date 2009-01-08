@@ -22,6 +22,7 @@ use List::MoreUtils qw( part apply uniq );
 use Scalar::Util    qw( set_prototype );
 use Carp::Clan      qw{ ^CatalystX::Imports(?:::|$) };
 use Filter::EOF;
+use Sub::Name 'subname';
 
 $EXPORT_MAP_NAME  = 'CATALYSTX_IMPORTS_EXPORT_MAP';
 $DEFAULT_LIBRARY  = __PACKAGE__ . '::Default';
@@ -365,11 +366,12 @@ sub context_install_export_into {
 
     # install the export, include prototype if specified
     {   no strict 'refs';
-        my $name = $export_info->{name};
-        *{ "${target}::${name}" }
-          = defined $prototype
+        my $name = join('::',$target, $export_info->{name});
+        *$name = subname $name, (
+          defined $prototype
             ? set_prototype sub { $export_code->(@_) }, $prototype
-            : $export_code;
+            : $export_code
+          );
     }
 
     return 1;
