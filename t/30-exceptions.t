@@ -10,7 +10,7 @@ plan tests => 4;
 
 sub _action_cache { return [] }
 
-use CatalystX::Imports;
+use CatalystX::Imports ();
 
 lives_ok(sub {
     CatalystX::Imports->export_into('Foo', Vars => {});

@@ -18,6 +18,7 @@ L<CatalystX::Imports>
 use base 'CatalystX::Imports';
 use vars qw( $EXPORT_MAP_NAME $DEFAULT_LIBRARY );
 
+use Class::MOP;
 use List::MoreUtils qw( part apply uniq );
 use Scalar::Util    qw( set_prototype );
 use Carp::Clan      qw{ ^CatalystX::Imports(?:::|$) };
@@ -275,7 +276,7 @@ sub export_into {
     # load libraries and export symbols
     for my $lib (keys %args) {
         my $lib_class = __PACKAGE__ . '::' . $lib;
-        $class->_ensure_class_loaded($lib_class);
+        Class::MOP::load_class($lib_class);
         my @symbols = @{ $args{ $lib } };
         push @symbols, $lib_class->default_exports
             if $load_default{ $lib };

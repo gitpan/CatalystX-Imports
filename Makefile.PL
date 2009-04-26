@@ -11,12 +11,12 @@ all_from        q{lib/CatalystX/Imports.pm};
 
 requires        q{Carp::Clan},                  0;
 requires        q{Filter::EOF},                 '0.02';
-requires        q{Class::Inspector},            0;
+requires        q{Class::MOP},                  0;
 requires        q{List::MoreUtils},             '0.19';
 requires        q{Scalar::Util},                '1.19';
-requires        q{Catalyst::Runtime},           '5.7000';
+requires        q{Catalyst::Runtime},           '5.80002';
 requires        q{Data::Alias},                 '0.08';
-requires        q{Class::C3},                   '0.14';
+requires        q{Class::C3},                   '0.20';
 requires        q{Sub::Name},                   '0.04';
 
 test_requires   q{Test::More},                                  '0.62';

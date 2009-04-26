@@ -15,7 +15,7 @@ use vars qw(
     $ACTION_WRAPPER_VAR
 );
 
-use Class::Inspector;
+use Class::MOP;
 use Carp::Clan        qw{ ^CatalystX::Imports(?:::|$) };
 use Filter::EOF;
 use Sub::Name 'subname';
@@ -26,7 +26,7 @@ use Sub::Name 'subname';
 
 =cut
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 =head1 SYNOPSIS
@@ -188,24 +188,16 @@ does, essentially.
 sub install_action_wrap_into {
     my ($class, $target) = @_;
 
-    # get all action cache entries
-    my @actions = @{ $target->_action_cache };
-
-    # lookup map with all the names of the methods
-    my %methods
-      = map { ($target->can($_) => $_) }
-           @{ Class::Inspector->functions($target) || [] };
+    # get all action methods of the target class (not inherited actions)
+    my $meta = Class::MOP::class_of($target);
+    my @actions = $meta->get_method_with_attributes_list;
 
     # replace every action code with a wrapper
     for my $action (@actions) {
-        my $original = $action->[0];
-
-        # only methods in that package are wanted
-        next unless exists $methods{ $original };
-
         # the wrapper fetches controller, context and args and stores
         # them for other parts of the CX:I module
-        my $wrapped = sub {
+        $meta->add_around_method_modifier($action->name => sub {
+            my $next = shift;
             my ($self, $c, @args) = @_;
 
             # fetch registered action call wrappers
@@ -230,32 +222,16 @@ sub install_action_wrap_into {
 
             # call original code with original arguments
             unless (@wrappers) {
-                return $original->(@_);
+                return $next->(@_);
             }
 
             # delegate to wrapper
             else {
                 my $wrapper = shift @wrappers;
-                return $wrapper->($original, [@wrappers], @_);
+                return $wrapper->($next, [@wrappers], @_);
             }
-        };
-
-        # set the new code
-        $action->[0] = $wrapped;
-
-        # replace name in attribute cache
-        my $attrs = delete $target->_attr_cache->{ $original };
-        $target->_attr_cache->{ $wrapped } = $attrs;
-
-        # replace code reference in package
-        {   no strict 'refs';
-            no warnings 'redefine';
-            my $method_name = "${target}::$methods{$original}";
-            *$method_name = subname $method_name, $wrapped;
-        }
+        });
     }
-
-    $target->_action_cache( \@actions );
 
     return 1;
 }
@@ -279,28 +255,8 @@ sub export_into {
     # to the target class
     for my $exporter (keys %exporters) {
         my $exporter_class = __PACKAGE__ . "::$exporter";
-        $class->_ensure_class_loaded($exporter_class);
+        Class::MOP::load_class($exporter_class);
         $exporter_class->export_into($target, $exporters{ $exporter });
-    }
-
-    return 1;
-}
-
-=head2 _ensure_class_loaded
-
-Convenience method that tries to requires the passed package if it isn't
-already loaded. Will return -1 if it had to be required, and 1 if it was
-already loaded.
-
-=cut
-
-sub _ensure_class_loaded {
-    my ($class, $target) = @_;
-
-    # load the class only once
-    unless (Class::Inspector->loaded($target)) {
-        require Class::Inspector->filename($target);
-        return -1;
     }
 
     return 1;

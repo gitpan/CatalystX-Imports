@@ -1,3 +1,7 @@
+  0.05 - Sun Apr 26 05:31:55 CEST 2009
+    - Replace the _action_cache hack with method modifiers now Catalyst 5.8
+      allows us to do that.
+
   0.04 - Thu Jan  8 12:50:47 CET 2009
     - Use Sub::Name to name the wrapper actions we install into the symbol
       table. This allows Class::MOP to recognize them as local methods and
